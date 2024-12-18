@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "comentariosTarea")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "proyecto", "tarea"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "proyecto"})
 public class ComentarioTarea {
 
     @Id
@@ -32,12 +32,16 @@ public class ComentarioTarea {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // @JsonBackReference(value = "tareas-comentariosTarea")
+    @JsonBackReference(value = "tareas-comentariosTarea")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tarea_id", nullable = false)
     private Tarea tarea;
     
-    @PrePersist
+    
+    public ComentarioTarea() { 
+    }
+
+	@PrePersist
     void prePersist(){
         creadoEn = new Date();
     }
@@ -81,6 +85,5 @@ public class ComentarioTarea {
     public void setTarea(Tarea tarea) {
         this.tarea = tarea;
     }
-    
     
 }

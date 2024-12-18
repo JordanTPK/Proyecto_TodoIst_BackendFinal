@@ -1,5 +1,6 @@
 package com.proyecto.integrador.backend.app.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -50,7 +53,32 @@ public class Proyecto {
 	@Temporal(TemporalType.DATE)
 	private Date creadoEn;
 
-    @PrePersist
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "proyectos_usuarios_invitados",
+        joinColumns = @JoinColumn(name = "proyecto_id"),
+        inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private List<Usuario> usuariosInvitados = new ArrayList<>();
+
+    
+    public List<Usuario> getUsuariosInvitados() {
+		return usuariosInvitados;
+	}
+
+	public void setUsuariosInvitados(List<Usuario> usuariosInvitados) {
+		this.usuariosInvitados = usuariosInvitados;
+	}
+
+	public Date getCreadoEn() {
+		return creadoEn;
+	}
+
+	public void setCreadoEn(Date creadoEn) {
+		this.creadoEn = creadoEn;
+	}
+
+	@PrePersist
     void prePersist(){
         creadoEn = new Date();
     }

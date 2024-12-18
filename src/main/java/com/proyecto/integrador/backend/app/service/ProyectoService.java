@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.proyecto.integrador.backend.app.entity.Invitacion;
 import com.proyecto.integrador.backend.app.entity.Proyecto;
+import com.proyecto.integrador.backend.app.entity.Tarea;
 
 public interface ProyectoService {
 
@@ -19,5 +20,6 @@ public interface ProyectoService {
     public abstract List<Proyecto> findProyectosInvitados(int usuarioId);
 	public abstract Invitacion invitarUsuario(int proyectoId, String invitadoUsername);
 	public abstract List<Proyecto> findProyectosAceptadosPorUsuario(int usuarioId);
+	public abstract List<Proyecto> findAllByUserIdOrInvitedUserId(int usuarioId);
 	
 }

@@ -71,7 +71,7 @@ public class Tarea {
     @JoinColumn(name = "proyecto_id", nullable = true)
     private Proyecto proyecto; 
     
-    // @JsonBackReference(value = "tareas-comentariosTarea")
+    @JsonBackReference(value = "tareas-comentariosTarea")
     @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ComentarioTarea> comentarios = new ArrayList<>();
 

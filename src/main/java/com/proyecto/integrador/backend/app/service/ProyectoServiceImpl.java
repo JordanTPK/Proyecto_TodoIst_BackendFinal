@@ -5,12 +5,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.proyecto.integrador.backend.app.entity.Invitacion;
 import com.proyecto.integrador.backend.app.entity.Proyecto;
+import com.proyecto.integrador.backend.app.entity.Tarea;
 import com.proyecto.integrador.backend.app.entity.Usuario;
 import com.proyecto.integrador.backend.app.exception.dto.ProyectoAlreadyExistsException;
 import com.proyecto.integrador.backend.app.repository.InvitacionRepository;
@@ -138,4 +141,14 @@ public class ProyectoServiceImpl implements ProyectoService {
         return usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
     }
+
+	@Override
+	public List<Proyecto> findAllByUserIdOrInvitedUserId(int usuarioId) {
+		return proyectoRepository.findProyectosByUsuarioIdOrInvitadoId(usuarioId);
+	}
+	
+
+	 
+   
+    
 }

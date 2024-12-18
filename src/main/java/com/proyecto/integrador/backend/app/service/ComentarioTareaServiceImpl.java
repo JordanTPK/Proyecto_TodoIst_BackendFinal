@@ -31,19 +31,32 @@ public class ComentarioTareaServiceImpl implements ComentarioTareaService {
 
 	@Override
 	public ComentarioTarea createComentario(ComentarioTarea comentario, int usuarioId) {
-		Usuario usuario = getAuthenticatedUsuario();
+	    if (comentario == null) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El comentario no puede ser nulo");
+	    }
 
-		Tarea tarea = tareaRepository.findById(comentario.getTarea().getId())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "La tarea especificada no existe"));
-		
-		if (!isUserAuthorized(tarea, usuario)) {
-			throw new RuntimeException("La tarea no pertenece al usuario");
-		}
-		
-		comentario.setTarea(tarea);
-		comentario.setUsuario(usuario);
+	    System.out.println("Comentario recibido: " + comentario);
+	    System.out.println("ID de la tarea: " + (comentario.getTarea() != null ? comentario.getTarea().getId() : "Nulo"));
 
-		return comentarioTareaRepository.save(comentario);
+	    if (comentario.getTarea() == null || comentario.getTarea().getId() <= 0) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La tarea no puede ser nula o no tiene un ID válido");
+	    }
+
+	    // Validar tarea
+	    Tarea tarea = tareaRepository.findById(comentario.getTarea().getId())
+	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "La tarea especificada no existe"));
+
+	    Usuario usuario = getAuthenticatedUsuario();
+
+	    if (!isUserAuthorized(tarea, usuario)) {
+	        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La tarea no pertenece al usuario");
+	    }
+
+	    comentario.setTarea(tarea);
+	    comentario.setUsuario(usuario);
+	    comentario.setCreadoEn(new Date());
+
+	    return comentarioTareaRepository.save(comentario);
 	}
 
 	@Override

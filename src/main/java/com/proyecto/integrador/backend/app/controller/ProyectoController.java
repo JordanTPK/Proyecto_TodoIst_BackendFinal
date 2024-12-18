@@ -144,5 +144,13 @@ public class ProyectoController {
         return usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
+    
+    @GetMapping("/todos")
+    public ResponseEntity<List<Proyecto>> getAllTasksByUserOrAssigned() {
+        Usuario usuario = getAuthenticatedUsuario();
+
+        List<Proyecto> tasks = proyectoService.findAllByUserIdOrInvitedUserId(usuario.getId());
+        return ResponseEntity.ok(tasks);
+    }
 
 }

@@ -29,6 +29,8 @@ public class TareaServiceImpl implements TareaService{
 	@Autowired
 	private ProyectoRepository proyectoRepository;
 	
+	
+	
 	@Override
 	public List<Tarea> findAll() {
 		return tareaRepository.findAll();
@@ -68,11 +70,15 @@ public class TareaServiceImpl implements TareaService{
 	    if (proyecto == null || proyecto.getId() == 0) {
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "el proyecto no es valido");
 	    }
-	    
+	   
 	    // Verificar si el proyecto pertenece al usuario autenticado
-	    if (proyecto.getUsuario() == null || proyecto.getUsuario().getId() != usuario.getId()) {
+	    /*if (proyecto.getUsuario() == null || proyecto.getUsuario().getId() != usuario.getId()) {
 	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El proyecto no pertenece al usuario autenticado");
-	    }
+	    }*/
+	    
+	    if (!isUserAuthorizedP(proyecto, usuario)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No tienes permiso para crear tareas en este proyecto");
+        }
 	    
 	    // Validar si ya existe una tarea con el mismo título en el proyecto
 	    Optional<Tarea> tareaExistente = tareaRepository.findByTituloAndProyecto(tarea.getTitulo(), proyecto);
@@ -220,5 +226,17 @@ public class TareaServiceImpl implements TareaService{
         }
         return false;
     }
+	
+	 private boolean isUserAuthorizedP(Proyecto proyecto, Usuario usuario) {
+	        if (proyecto.getUsuario().getId() == usuario.getId()) {
+	            return true;
+	        }
+	        for (Usuario assignedUser : proyecto.getUsuariosInvitados()) {
+	            if (assignedUser.getId() == usuario.getId()) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
 
 }
