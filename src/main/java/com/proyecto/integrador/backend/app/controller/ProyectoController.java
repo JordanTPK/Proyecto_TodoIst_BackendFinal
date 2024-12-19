@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.integrador.backend.app.entity.Invitacion;
 import com.proyecto.integrador.backend.app.entity.Proyecto;
 import com.proyecto.integrador.backend.app.entity.Usuario;
 import com.proyecto.integrador.backend.app.exception.dto.ProyectoAlreadyExistsException;
