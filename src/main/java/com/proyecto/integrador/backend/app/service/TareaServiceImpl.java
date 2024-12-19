@@ -76,9 +76,9 @@ public class TareaServiceImpl implements TareaService{
 	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El proyecto no pertenece al usuario autenticado");
 	    }*/
 	    
-	    if (!isUserAuthorizedP(proyecto, usuario)) {
+	    /*if (!isUserAuthorizedP(proyecto, usuario)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No tienes permiso para crear tareas en este proyecto");
-        }
+        	}*/
 	    
 	    // Validar si ya existe una tarea con el mismo título en el proyecto
 	    Optional<Tarea> tareaExistente = tareaRepository.findByTituloAndProyecto(tarea.getTitulo(), proyecto);
