@@ -93,8 +93,8 @@ public class ProyectoController {
 	    }
 
 	    try {
-	        proyectoService.invitarUsuario(proyectoId, invitadoUsername);
-	        return ResponseEntity.ok("Usuario invitado exitosamente");
+            Invitacion invitacion = proyectoService.invitarUsuario(proyectoId, invitadoUsername);
+            return ResponseEntity.ok(invitacion);
 	    } catch (RuntimeException e) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	    }
